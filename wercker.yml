@@ -12,6 +12,8 @@ build:
           tar -cvzf $WERCKER_OUTPUT_DIR/docker-$DATETIME.tgz container.tar Docker.mf
 deploy:
   steps:
+    - install-packages:
+        packages: python-pip
     - pip-install:
         requirements_file: ""
         packages_list: "awscli"
