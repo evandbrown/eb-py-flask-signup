@@ -16,4 +16,3 @@ deploy:
         key-id: $KEY
         key-secret: $SECRET
         bucket-url: $BUCKET
-        source-dir: $WERCKER_OUTPUT_DIR
