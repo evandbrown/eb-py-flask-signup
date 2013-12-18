@@ -1,6 +1,8 @@
 box: wercker-labs/docker
 build:
   steps:
+    - install-packages:
+        packages: zip
     - script:
         name: Build and package the Docker image
         code: |
