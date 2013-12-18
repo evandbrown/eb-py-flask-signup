@@ -8,7 +8,7 @@ build:
           sudo docker build -t evandbrown/eb-py-flask .
           CONTAINER_ID=$(sudo docker run -d evandbrown/eb-py-flask)
           sudo docker export $CONTAINER_ID > container.tar
-          tar -cvzf $WERCKER_OUTPUT_DIR/$WERCKER_GIT_COMMIT.tgz container.tar Docker.mf
+          tar -cvzf $WERCKER_OUTPUT_DIR/$WERCKER_GIT_COMMIT.tgz container.tar Docker.mf .ebextensions/
 deploy:
   steps:
     - install-packages:
