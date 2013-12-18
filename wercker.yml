@@ -8,7 +8,6 @@ build:
           sudo docker build -t evandbrown/eb-py-flask .
           CONTAINER_ID=$(sudo docker run -d evandbrown/eb-py-flask)
           sudo docker export $CONTAINER_ID > container.tar
-          DATETIME=`date +%s`
           tar -cvzf $WERCKER_OUTPUT_DIR/$WERCKER_GIT_COMMIT.tgz container.tar Docker.mf
 deploy:
   steps:
@@ -24,8 +23,5 @@ deploy:
     - script:
         name: Create Elastic Beanstalk Application Version
         code: |
-          aws elasticbeanstalk create-application-version \
-            --application-name $WERCKER_GIT_REPOSITORY \
-            --version-label $WERCKER_GIT_COMMIT-`date +%s` \
-            --source-bundle S3Bucket=$DEPLOY_BUCKET,S3Key=$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH/$WERCKER_GIT_COMMIT.tgz
+          aws elasticbeanstalk create-application-version --application-name $WERCKER_GIT_REPOSITORY --version-label $WERCKER_GIT_COMMIT-`date +%s` --source-bundle S3Bucket=$DEPLOY_BUCKET,S3Key=$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH/$WERCKER_GIT_COMMIT.tgz
       
