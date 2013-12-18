@@ -9,10 +9,14 @@ build:
           CONTAINER_ID=$(sudo docker run -d evandbrown/eb-py-flask)
           sudo docker export $CONTAINER_ID > container.tar
           DATETIME=`date +%s`
-          tar -cvzf $WERCKER_OUTPUT_DIR/application-$DATETIME.tgz container.tar Docker.mf
+          tar -cvzf $WERCKER_OUTPUT_DIR/docker-$DATETIME.tgz container.tar Docker.mf
 deploy:
   steps:
-    - s3sync:
-        key-id: $KEY
-        key-secret: $SECRET
-        bucket-url: $BUCKET
+    - pip-install:
+        requirements_file: ""
+        packages_list: "awscli"
+    - script:
+        name: Synchronize build output to S3
+        code: |
+          aws s3 sync . $DEPLOY_BUCKET/$EB_APP_NAME/$ENVIRONMENT
+      
