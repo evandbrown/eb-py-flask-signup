@@ -21,4 +21,11 @@ deploy:
         name: Synchronize build output to S3
         code: |
           aws s3 cp $WERCKER_GIT_COMMIT.tgz s3://$DEPLOY_BUCKET/$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH/
+    - script:
+        name: Create Elastic Beanstalk Application Version
+        code: |
+          aws elasticbeanstalk create-application-version \
+            --application-name $WERCKER_GIT_REPOSITORY \
+            --version-label $WERCKER_GIT_COMMIT-`date +%s` \
+            --source-bundle S3Bucket=$DEPLOY_BUCKET,S3Key=$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH/$WERCKER_GIT_COMMIT.tgz
       
