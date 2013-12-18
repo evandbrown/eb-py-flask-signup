@@ -9,7 +9,7 @@ build:
           CONTAINER_ID=$(sudo docker run -d evandbrown/eb-py-flask)
           sudo docker export $CONTAINER_ID > container.tar
           DATETIME=`date +%s`
-          tar -cvzf $WERCKER_OUTPUT_DIR/docker-$DATETIME.tgz container.tar Docker.mf
+          tar -cvzf $WERCKER_OUTPUT_DIR/$WERCKER_GIT_COMMIT.tgz container.tar Docker.mf
 deploy:
   steps:
     - install-packages:
@@ -20,5 +20,5 @@ deploy:
     - script:
         name: Synchronize build output to S3
         code: |
-          aws s3 sync . $DEPLOY_BUCKET/$EB_APP_NAME/$ENVIRONMENT
+          aws s3 cp $WERCKER_GIT_COMMIT.tgz s3://$DEPLOY_BUCKET/$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH/
       
