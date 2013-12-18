@@ -1,7 +1,7 @@
 box: wercker-labs/docker
 build:
   steps:
-    - docker-image:
+    - script:
         name: Build and package the Docker image
         code: |
           cd $WERCKER_SOURCE_DIR
