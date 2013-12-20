@@ -13,6 +13,9 @@ ADD . /src
 # Install app dependencies
 RUN cd /src; pip install -r requirements.txt
 
+# Create /var/app
+RUN mkdir /var/app
+
 # Expose
 EXPOSE  5000
 
